@@ -1,16 +1,49 @@
-# React + Vite
+# CodeArena Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The frontend application for **CodeArena**, a full-stack online coding judge platform.
 
-Currently, two official plugins are available:
+CodeArena provides a competitive-programming style environment where users can browse coding problems, write and submit solutions, receive execution verdicts, track submissions, view rankings, and manage their profiles.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Features
 
-## React Compiler
+- User registration and login
+- JWT-based authentication
+- Protected application routes
+- Problem browsing and search
+- Problem solving interface
+- C++17 and Python submission support
+- Real-time submission verdict display
+- Submission history
+- User statistics and progress tracking
+- Leaderboard
+- Profile management
+- Password change and password reset flows
+- Email verification for email changes
+- Admin problem management
+- Admin test-case management
+- Responsive dark-themed UI
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+- React
+- Vite
+- JavaScript
+- CSS
+- Fetch API
+- JWT authentication
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📁 Project Structure
+
+```text
+frontend/
+├── public/
+├── src/
+│   ├── assets/
+│   ├── App.jsx
+│   ├── App.css
+│   ├── main.jsx
+│   └── ...
+├── index.html
+├── package.json
+├── vite.config.js
+└── README.md

@@ -1095,7 +1095,7 @@ The executor includes automated tests covering both successful execution and fai
 
 ---
 
-## 🎤 Interview-Level Project Explanation
+## 🧠 Project Overview
 
 > CodeArena is a full-stack online coding judge built using React, FastAPI, PostgreSQL, SQLAlchemy, and a custom execution engine. Users can solve programming problems and submit solutions in C++17 or Python. The FastAPI backend authenticates users, stores application data and submissions in PostgreSQL, and sends submitted code to the execution engine. C++17 submissions are compiled using g++, while Python submissions are executed directly. The executor applies time and size limits, captures compilation and runtime errors, evaluates test cases, generates a verdict, and stores the submission result. I also implemented authentication, password reset, email verification, submission history, statistics, leaderboard functionality, Swagger documentation, and automated executor tests.
 

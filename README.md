@@ -1,167 +1,595 @@
 # CodeArena
 
-> A full-stack online coding judge platform for solving programming problems, executing submissions, evaluating test cases, and tracking competitive programming progress.
+> A full-stack online coding judge platform built with React, FastAPI, PostgreSQL, and a custom code execution engine.
 
-CodeArena provides a complete coding-platform workflow: users can create accounts, solve problems, submit C++17 or Python solutions, receive detailed execution verdicts, review submission history, and compete through a leaderboard.
+CodeArena allows users to solve programming problems, submit solutions in C++17 or Python, receive automated verdicts, track submission history, view coding statistics, and compete on a global leaderboard.
 
 ---
 
 ## 🚀 Features
 
-### Authentication & Accounts
+### 👤 Authentication & Account Management
 
 - User registration and login
 - JWT-based authentication
-- Password reset through email
+- Protected user functionality
 - Password change
-- Profile management
-- Email change verification
+- Password reset through email
+- Email verification
+- User profile
+- Coding statistics
 
-### Problem Solving
+### 💻 Online Coding Judge
 
-- Browse programming problems
-- Search and filter problems by difficulty
-- View problem descriptions and test cases
-- Submit solutions using C++17 or Python
-- Track solved problems and progress
-
-### Online Judge
-
-CodeArena evaluates submitted programs and returns verdicts including:
-
-- ✅ Accepted
-- ❌ Wrong Answer
-- ⚠️ Runtime Error
-- 🔴 Compilation Error
-- ⏱️ Time Limit Exceeded
-
-The execution system also handles:
-
-- Execution time limits
+- Browse coding problems
+- Search problems
+- Difficulty filtering
+- C++17 support
+- Python support
+- Code submission and execution
+- Automated test-case evaluation
+- Accepted verdict
+- Wrong Answer verdict
+- Compilation Error detection
+- Runtime Error detection
+- Time Limit Exceeded detection
 - Code size limits
 - Input size limits
 - Output size limits
-- Temporary workspace creation and cleanup
-- C++17 compilation using `g++`
-- Python program execution
+- Temporary execution workspaces
+- Automatic workspace cleanup
 
-### Submissions & Competition
+### 📊 Progress & Competition
 
 - Submission history
-- Submission statistics
-- Problem-solving progress
-- Competitive leaderboard
+- Problems solved tracking
+- Success rate
+- Verdict breakdown
+- Coding statistics
+- Global leaderboard
 - User rankings
 
-### Developer Experience
+### 🛠️ Developer Features
 
-- FastAPI REST API
-- Interactive Swagger API documentation
-- Environment-based configuration
-- Docker configuration for backend packaging
-- Production frontend build support
+- RESTful FastAPI backend
+- PostgreSQL database
+- SQLAlchemy ORM
+- JWT authentication
+- Swagger/OpenAPI documentation
+- Environment-based frontend API configuration
 - Automated executor test suite
+- Docker configuration
 
 ---
 
-## 🏗️ Architecture
+## 📸 Screenshots
 
-```text
-┌──────────────────────┐
-│    React Frontend    │
-│      Vite + CSS      │
-└──────────┬───────────┘
-           │ HTTP / REST API
-           ▼
-┌──────────────────────┐
-│    FastAPI Backend   │
-│ Authentication       │
-│ Problems             │
-│ Submissions          │
-│ Leaderboard          │
-└───────┬──────────────┘
-        │
-        ├──────────────────┐
-        ▼                  ▼
-┌───────────────┐   ┌─────────────────────┐
-│ PostgreSQL    │   │   Judge Executor    │
-│               │   │                     │
-│ Users         │   │ Python execution    │
-│ Problems      │   │ C++17 compilation   │
-│ Test Cases    │   │ Time limits         │
-│ Submissions   │   │ Size limits         │
-└───────────────┘   │ Workspace cleanup   │
-                    └─────────────────────┘
-```
+### 🏠 Homepage
+
+![CodeArena Homepage](docs/screenshots/01-homepage.png)
+
+The homepage provides an overview of CodeArena, the coding workflow, platform features, and user statistics.
+
+---
+
+### 📚 Problems
+
+![CodeArena Problems](docs/screenshots/02-problems.png)
+
+The Problems page allows users to search problems, filter by difficulty, view solved status, and start solving.
+
+---
+
+### 💻 Code Editor
+
+![CodeArena Code Editor](docs/screenshots/03-code-editor.png)
+
+The coding interface allows users to read the problem statement, write code, select a supported language, and submit solutions.
+
+---
+
+### ✅ Accepted Submission
+
+![CodeArena Accepted Submission](docs/screenshots/04-accepted-submission.png)
+
+After execution, CodeArena displays the submission verdict, programming language, passed test cases, runtime, and submitted code.
+
+---
+
+### 📜 Submission History
+
+![CodeArena Submission History](docs/screenshots/05-submission-history.png)
+
+Users can review previous submissions, programming languages, verdicts, test results, and execution runtime.
+
+---
+
+### 🏆 Leaderboard
+
+![CodeArena Leaderboard](docs/screenshots/06-leaderboard.png)
+
+The leaderboard allows users to compare their coding progress and rankings with other users.
+
+---
+
+## 🏗️ System Architecture
+
+    React Frontend
+           |
+           | REST API / JWT
+           v
+       FastAPI Backend
+        /           \
+       /             \
+      v               v
+PostgreSQL       Code Executor
+ Database          /       \
+                  /         \
+             Python        C++17
+                              |
+                         g++ Compilation
+                              |
+                              v
+                        Test Cases
+                              |
+                              v
+                         Final Verdict
+                              |
+                              v
+                         PostgreSQL
 
 ---
 
 ## 🔄 Submission Flow
 
-```text
-User writes code
-       │
-       ▼
-React Frontend
-       │
-       │ POST submission
-       ▼
-FastAPI Backend
-       │
-       ▼
-Load problem + test cases
-       │
-       ▼
-Judge Executor
-       │
-       ├── C++17 → Compile → Execute
-       │
-       └── Python → Execute
-       │
-       ▼
-Capture output / errors / timeout
-       │
-       ▼
-Compare program output
-       │
-       ▼
-Generate verdict
-       │
-       ▼
-Store submission in PostgreSQL
-       │
-       ▼
-Return result to frontend
-```
+    User
+      |
+      v
+    Select Problem
+      |
+      v
+    Write Code
+      |
+      v
+    Submit Solution
+      |
+      v
+    React Frontend
+      |
+      v
+    FastAPI Backend
+      |
+      v
+    Validate Submission
+      |
+      v
+    Code Execution Engine
+      |
+      +----------------+
+      |                |
+      v                v
+    Python           C++17
+      |                |
+      |           Compile with g++
+      |                |
+      +-------+--------+
+              |
+              v
+        Run Test Cases
+              |
+              v
+        Compare Output
+              |
+              v
+        Generate Verdict
+              |
+              v
+        Store Submission
+              |
+              v
+        Return Result
+              |
+              v
+        React Frontend
 
 ---
 
-## 🛡️ Execution Controls
+## ⚙️ Code Execution Engine
 
-Code execution is handled through temporary workspaces and controlled subprocess execution.
+CodeArena includes a custom execution engine responsible for running submitted programs and evaluating them against configured test cases.
 
-The executor includes protections such as:
+### Supported Languages
 
-- Process timeout handling
-- Maximum code size
-- Maximum input size
-- Maximum output size
-- Compilation error handling
-- Runtime error handling
-- Temporary workspace cleanup
-- Unsupported-language validation
+| Language | Execution |
+|---|---|
+| Python | Direct Python execution |
+| C++17 | Compile using `g++`, then execute |
 
-> **Note:** The current executor is designed for this project/demo environment and should not be considered a production-grade security sandbox for executing arbitrary untrusted code at Internet scale.
+### Execution Pipeline
+
+    Submitted Code
+          |
+          v
+    Language Validation
+          |
+          v
+    Create Temporary Workspace
+          |
+          +-------------------+
+          |                   |
+          v                   v
+       Python               C++17
+       Execute              Compile
+          |                   |
+          |              Compilation
+          |               Successful?
+          |                /       \
+          |              No         Yes
+          |              |           |
+          |              v           v
+          |         Compilation   Execute
+          |            Error         |
+          |                          |
+          +------------+-------------+
+                       |
+                       v
+                 Run Test Cases
+                       |
+                       v
+                 Compare Output
+                       |
+                       v
+                  Final Verdict
+                       |
+                       v
+                 Store Submission
 
 ---
 
-## 🧰 Tech Stack
+## ⏱️ Execution Controls
+
+The executor implements several protections around submitted programs:
+
+| Protection | Purpose |
+|---|---|
+| Time Limit | Prevents programs from running indefinitely |
+| Code Size Limit | Restricts excessively large source submissions |
+| Input Size Limit | Restricts excessively large test inputs |
+| Output Size Limit | Restricts excessive program output |
+| Temporary Workspace | Provides a temporary directory for execution |
+| Workspace Cleanup | Removes temporary execution files |
+
+The executor also handles:
+
+- Compilation failures
+- Runtime failures
+- Process timeouts
+- Unsupported languages
+- Invalid submissions
+
+> **Security Note:** The current executor is designed for this project and portfolio environment. A production online judge executing arbitrary untrusted code at Internet scale would require stronger isolation such as containers or dedicated sandboxes, CPU and memory quotas, network restrictions, and isolated execution workers.
+
+---
+
+## 🧾 Submission Verdicts
+
+| Verdict | Meaning |
+|---|---|
+| Accepted | Solution passed all configured test cases |
+| Wrong Answer | Program output did not match the expected output |
+| Compilation Error | C++ program failed during compilation |
+| Runtime Error | Program terminated with an execution error |
+| Time Limit Exceeded | Program exceeded the configured execution time |
+
+---
+
+## 🔐 Authentication
+
+CodeArena uses JWT-based authentication to provide protected user functionality.
+
+Authentication-related functionality includes:
+
+- User registration
+- User login
+- JWT authentication
+- Protected API endpoints
+- Password change
+- Password reset
+- Email verification
+- User-specific submissions
+- User-specific statistics
+
+---
+
+## 🔑 Password Reset
+
+Users can request a password reset through their registered email address.
+
+    User Requests Password Reset
+              |
+              v
+    Backend Generates Reset Token
+              |
+              v
+    Reset Email Sent
+              |
+              v
+    User Opens Reset Link
+              |
+              v
+    New Password Submitted
+              |
+              v
+    Password Updated
+
+---
+
+## ✉️ Email Verification
+
+CodeArena supports email verification for account-related operations and email changes.
+
+This provides an additional verification step for important account actions.
+
+---
+
+## 📚 Problem System
+
+The problem system allows users to:
+
+- Browse coding problems
+- Search problems
+- Filter by difficulty
+- View problem statements
+- View examples
+- View constraints
+- Check solved status
+- Open the code editor
+- Submit solutions
+
+Each problem can contain the information required by the execution engine to evaluate submitted solutions.
+
+---
+
+## 🧪 Test Case Evaluation
+
+Problems can contain multiple test cases.
+
+Submitted solutions are executed against the configured test cases and the executor determines the final verdict.
+
+The system tracks information such as:
+
+- Passed test cases
+- Failed test cases
+- Execution runtime
+- Final verdict
+
+---
+
+## 📜 Submission History
+
+Users can review their previous submissions.
+
+Submission history can provide information such as:
+
+- Problem
+- Programming language
+- Verdict
+- Passed test cases
+- Execution runtime
+- Submitted code
+- Submission time
+
+This allows users to track their attempts and review previous solutions.
+
+---
+
+## 📊 Statistics
+
+CodeArena provides coding statistics to help users track their progress.
+
+Statistics include:
+
+- Problems solved
+- Total submissions
+- Successful submissions
+- Success rate
+- Verdict breakdown
+- Coding activity
+
+---
+
+## 🏆 Leaderboard
+
+CodeArena includes a global leaderboard that allows users to compare their coding activity and solved-problem progress with other users.
+
+---
+
+## 🌐 REST API
+
+The backend exposes RESTful API endpoints using FastAPI.
+
+The API handles functionality related to:
+
+- Authentication
+- User management
+- Problems
+- Test cases
+- Submissions
+- Code execution
+- Statistics
+- Leaderboard
+- Password reset
+- Email verification
+
+The React frontend communicates with the backend through HTTP requests.
+
+---
+
+## 📖 Swagger / OpenAPI
+
+FastAPI automatically provides interactive API documentation through Swagger/OpenAPI.
+
+When running locally:
+
+    http://127.0.0.1:8000/docs
+
+Swagger can be used to inspect and test the available backend endpoints.
+
+---
+
+## 🗄️ Database
+
+CodeArena uses PostgreSQL for persistent application data.
+
+SQLAlchemy is used as the ORM layer between the FastAPI backend and PostgreSQL.
+
+The database stores application information related to:
+
+- Users
+- Problems
+- Test cases
+- Submissions
+- Authentication-related data
+- User statistics
+
+---
+
+## 🔗 Database Relationships
+
+The main application relationships can be represented as:
+
+    User
+      |
+      +----------------+
+      |                |
+      v                v
+    Submissions     Statistics
+      |
+      v
+    Problem
+      |
+      v
+    Test Cases
+
+A user can have multiple submissions.
+
+A problem can contain multiple test cases.
+
+Submissions connect users with the problems they attempt.
+
+---
+
+## 🎨 Frontend Architecture
+
+The frontend is built using React and Vite.
+
+The frontend provides:
+
+- Authentication screens
+- Homepage
+- Problem browser
+- Problem solving interface
+- Code editor
+- Submission results
+- Submission history
+- Statistics
+- Leaderboard
+- User profile
+
+The frontend communicates with the backend through REST APIs.
+
+---
+
+## 🧠 Backend Architecture
+
+The backend is responsible for authentication, API handling, database operations, application logic, and code execution.
+
+    FastAPI
+       |
+       +-- Authentication
+       |
+       +-- User Management
+       |
+       +-- Problem Management
+       |
+       +-- Submission Management
+       |
+       +-- Statistics
+       |
+       +-- Leaderboard
+       |
+       +-- Password Reset
+       |
+       +-- Email Verification
+       |
+       +-- Code Execution
+                |
+                +-- Python
+                |
+                +-- C++17
+
+---
+
+## 📡 Frontend / Backend Communication
+
+CodeArena follows a client-server architecture.
+
+    React Frontend
+          |
+          | HTTP Requests
+          v
+    FastAPI REST API
+          |
+          +--------------> PostgreSQL
+          |
+          +--------------> Code Executor
+
+The frontend API base URL can be configured using:
+
+    VITE_API_BASE_URL=http://127.0.0.1:8000
+
+---
+
+## 📁 Project Structure
+
+    CodeArena/
+    |
+    +-- backend/
+    |   +-- main.py
+    |   +-- test_executor.py
+    |   +-- Dockerfile
+    |   +-- .dockerignore
+    |   +-- requirements.txt
+    |
+    +-- frontend/
+    |   +-- src/
+    |   +-- public/
+    |   +-- package.json
+    |   +-- vite.config.js
+    |   +-- .env.example
+    |
+    +-- docs/
+    |   +-- screenshots/
+    |       +-- 01-homepage.png
+    |       +-- 02-problems.png
+    |       +-- 03-code-editor.png
+    |       +-- 04-accepted-submission.png
+    |       +-- 05-submission-history.png
+    |       +-- 06-leaderboard.png
+    |
+    +-- .gitignore
+    +-- README.md
+
+---
+
+## 🛠️ Technology Stack
 
 ### Frontend
 
 - React
 - Vite
 - JavaScript
+- HTML
 - CSS
 
 ### Backend
@@ -169,8 +597,8 @@ The executor includes protections such as:
 - Python
 - FastAPI
 - SQLAlchemy
-- Pydantic
-- JWT-based authentication
+- JWT authentication
+- REST APIs
 
 ### Database
 
@@ -180,222 +608,401 @@ The executor includes protections such as:
 
 - Python
 - C++17
-- `g++`
-- Temporary execution workspaces
-- Process timeout handling
-- Input/output/code size restrictions
+- g++
+- Subprocess execution
 
-### Development & Tooling
+### Development Tools
 
 - Git
 - GitHub
-- Docker configuration
-- FastAPI Swagger / OpenAPI
+- VS Code
+- Swagger/OpenAPI
+- Docker
 
 ---
 
-## 📁 Project Structure
+## 🚀 Local Development Setup
 
-```text
-CodeArena/
-│
-├── backend/
-│   ├── database.py
-│   ├── executor.py
-│   ├── leaderboard.py
-│   ├── main.py
-│   ├── models.py
-│   ├── schemas.py
-│   ├── seed.py
-│   ├── test_executor.py
-│   ├── requirements.txt
-│   ├── .env.example
-│   ├── Dockerfile
-│   ├── .dockerignore
-│   └── ...
-│
-├── frontend/
-│   ├── src/
-│   │   ├── assets/
-│   │   ├── App.jsx
-│   │   ├── App.css
-│   │   ├── index.css
-│   │   └── main.jsx
-│   ├── package.json
-│   └── ...
-│
-├── .gitignore
-└── README.md
-```
+### Prerequisites
 
----
+Install the following:
 
-## ⚙️ Local Setup
+- Node.js
+- npm
+- Python 3
+- PostgreSQL
+- Git
+- C++ compiler with `g++`
 
-### 1. Clone the repository
+### Backend Setup
 
-```bash
-git clone https://github.com/abhiram-naik/CodeArena.git
-cd CodeArena
-```
+Open a terminal:
 
-### 2. Backend setup
+    cd backend
 
-Create and activate a Python virtual environment:
+Create a virtual environment:
 
-```bash
-cd backend
-python -m venv venv
-```
+    python -m venv venv
 
-Windows PowerShell:
+Activate it on Windows PowerShell:
 
-```powershell
-.\venv\Scripts\Activate.ps1
-```
+    .\venv\Scripts\Activate.ps1
 
 Install dependencies:
 
-```bash
-pip install -r requirements.txt
-```
+    pip install -r requirements.txt
 
-Create your environment file from the provided example:
+Configure the required backend environment variables.
 
-```text
-.env.example → .env
-```
+Start the backend:
 
-Configure the required database, authentication, and email environment variables in `.env`.
-
-Start the FastAPI server:
-
-```bash
-python -m uvicorn main:app --reload
-```
+    python -m uvicorn main:app --reload
 
 Backend:
 
-```text
-http://127.0.0.1:8000
-```
+    http://127.0.0.1:8000
 
-Swagger API documentation:
+Swagger:
 
-```text
-http://127.0.0.1:8000/docs
-```
+    http://127.0.0.1:8000/docs
+
+### Frontend Setup
+
+Open another terminal:
+
+    cd frontend
+
+Install dependencies:
+
+    npm install
+
+Start the development server:
+
+    npm run dev
+
+Frontend:
+
+    http://localhost:5173
 
 ---
 
-### 3. Frontend setup
+## 🔐 Environment Variables
 
-Open a second terminal:
+Do not commit private credentials or secrets to GitHub.
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+### Frontend
 
-The Vite development server will provide the frontend URL in the terminal.
+The repository includes:
 
-For local development, the frontend can use:
+    frontend/.env.example
 
-```text
-VITE_API_BASE_URL=http://127.0.0.1:8000
-```
+Example:
+
+    VITE_API_BASE_URL=http://127.0.0.1:8000
+
+### Backend
+
+Backend environment variables contain local configuration such as:
+
+- Database connection
+- Secret key
+- Email configuration
+- Application settings
+
+Sensitive `.env` files should remain local and are excluded from version control.
 
 ---
 
 ## 🧪 Testing
 
-The backend execution engine includes automated tests covering:
-
-- Python correct execution
-- C++ correct execution
-- Python runtime errors
-- C++ compilation errors
-- Python time limits
-- C++ time limits
-- Output size limits
-- Code size limits
-- Input size limits
-- Unsupported languages
-- Python input handling
-- C++ input handling
-
-The executor test suite currently passes all implemented execution tests.
+CodeArena includes an automated executor test suite covering important execution scenarios.
 
 Run:
 
-```bash
-cd backend
-python test_executor.py
-```
+    cd backend
+    python test_executor.py
+
+The test suite covers:
+
+1. Python correct execution
+2. C++ correct execution
+3. Python runtime error
+4. C++ compilation error
+5. Python time limit
+6. C++ time limit
+7. Output size limit
+8. Code size limit
+9. Input size limit
+10. Unsupported language
+11. Python input handling
+12. C++ input handling
+
+### Current Result
+
+    12/12 tests passed
 
 ---
 
-## 📊 Core Data Model
+## 🧪 Additional Verification
 
-The backend uses PostgreSQL with SQLAlchemy for persistent application data.
+### Backend Syntax Check
 
-The system stores information related to:
+    cd backend
+    python -m py_compile main.py
 
-```text
-Users
-  │
-  ├── Submissions
-  │       │
-  │       └── Problems
-  │
-  └── Profile / Account information
+### Frontend Production Build
 
-Problems
-  │
-  └── Test Cases
-
-Submissions
-  │
-  └── Verdict + execution result
-```
-
-This allows CodeArena to maintain submission history, user progress, solved-problem statistics, and leaderboard rankings.
+    cd frontend
+    npm run build
 
 ---
 
-## 🎯 What I Built
+## 🐳 Docker Configuration
 
-The main engineering challenge in CodeArena was implementing the complete submission-to-verdict pipeline.
+Docker configuration is included for future containerized environments and deployment.
 
-A submission travels through the following process:
+Backend Docker files:
 
-1. The user submits source code from the React frontend.
-2. FastAPI validates the request and identifies the selected problem.
-3. The backend retrieves the problem's test cases.
-4. The executor prepares a temporary workspace.
-5. C++ submissions are compiled with `g++`; Python submissions are executed directly.
-6. Execution is monitored for time and output constraints.
-7. Program output is compared against the expected output.
-8. A final verdict is generated.
-9. The submission result is stored in PostgreSQL.
-10. The verdict and execution result are returned to the frontend.
+    backend/Dockerfile
+    backend/.dockerignore
 
-This project helped me work across frontend development, REST APIs, authentication, relational databases, process execution, error handling, and software architecture.
+The Docker configuration prepares the backend environment and includes the tools required for C++17 compilation.
+
+Docker deployment is not required for local development.
 
 ---
 
-## 📸 Screenshots
+## 🔒 Security Considerations
 
-Screenshots of the following application areas will be added here:
+CodeArena includes several security-oriented practices:
 
-- CodeArena homepage
-- Problem listing
-- Problem solving/editor screen
-- Submission result
-- Submission history
-- Leaderboard
-- Profile
+- JWT-based authentication
+- Protected backend endpoints
+- Environment-based secrets
+- `.env` excluded from Git
+- Input validation
+- Code size limits
+- Input size limits
+- Output size limits
+- Process timeouts
+- Temporary execution workspaces
+- Automatic workspace cleanup
+
+### Production Security
+
+The current executor is a project-level implementation and should not be considered a complete security sandbox for arbitrary Internet-scale untrusted code execution.
+
+A production-grade online judge would require additional isolation such as:
+
+- Containerized execution
+- Dedicated sandbox environments
+- CPU quotas
+- Memory quotas
+- Network isolation
+- Filesystem restrictions
+- Resource monitoring
+- Isolated worker infrastructure
+
+---
+
+## 🧩 Engineering Challenges
+
+### 1. User Code Execution
+
+Submitted programs require controlled execution.
+
+The executor handles:
+
+- Process creation
+- Compilation
+- Program execution
+- Timeouts
+- Error capture
+- Output capture
+- Temporary file management
+- Cleanup
+
+### 2. Multi-Language Support
+
+Different execution paths are used for Python and C++17.
+
+    Python
+      |
+      +-- Direct execution
+
+    C++17
+      |
+      +-- Compile using g++
+      |
+      +-- Execute compiled program
+
+### 3. Failure Handling
+
+The executor handles multiple failure scenarios:
+
+- Compilation errors
+- Runtime errors
+- Timeouts
+- Excessive output
+- Excessive input
+- Excessively large source code
+- Unsupported languages
+
+### 4. Full-Stack Integration
+
+The project connects the complete flow:
+
+    React
+      |
+      v
+    REST API
+      |
+      v
+    FastAPI
+      |
+      v
+    SQLAlchemy
+      |
+      v
+    PostgreSQL
+
+    FastAPI
+      |
+      v
+    Code Executor
+      |
+      v
+    Verdict
+      |
+      v
+    PostgreSQL
+      |
+      v
+    React
+
+---
+
+## 💡 Design Decisions
+
+### Why React?
+
+React provides a component-based frontend architecture suitable for building an interactive coding platform.
+
+### Why FastAPI?
+
+FastAPI provides:
+
+- Request validation
+- REST API development
+- Python ecosystem integration
+- Automatic OpenAPI documentation
+- High-performance API handling
+
+### Why PostgreSQL?
+
+PostgreSQL provides reliable relational storage for users, problems, test cases, submissions, and statistics.
+
+### Why SQLAlchemy?
+
+SQLAlchemy provides an ORM abstraction that simplifies database operations from Python.
+
+### Why a Custom Executor?
+
+A custom executor provides control over:
+
+- Supported languages
+- Compilation
+- Execution
+- Timeouts
+- Output handling
+- Test-case evaluation
+- Verdict generation
+
+---
+
+## 🔄 Complete Application Data Flow
+
+    USER
+      |
+      v
+    React / UI
+      |
+      v
+    REST API / FastAPI
+      |
+      +---------------------+
+      |                     |
+      v                     v
+    PostgreSQL          Code Executor
+                              |
+                         +----+----+
+                         |         |
+                         v         v
+                      Python     C++17
+                         |         |
+                         +----+----+
+                              |
+                              v
+                       Test Case Results
+                              |
+                              v
+                         Final Verdict
+                              |
+                              v
+                         PostgreSQL
+                              |
+                              v
+                            React
+                              |
+                              v
+                             USER
+
+---
+
+## 🏛️ Application Layers
+
+CodeArena follows a layered application architecture:
+
+    Presentation Layer
+            |
+            v
+    React Frontend
+            |
+            v
+    API Layer
+            |
+            v
+    FastAPI Backend
+            |
+            +--------------> Authentication
+            |
+            +--------------> Application Logic
+            |
+            +--------------> Code Executor
+            |
+            v
+    Data Layer
+            |
+            v
+    SQLAlchemy / PostgreSQL
+
+---
+
+## 🎯 Project Goals
+
+CodeArena was built to demonstrate practical software engineering concepts including:
+
+- Full-stack development
+- Backend engineering
+- Database design
+- REST API development
+- Authentication
+- Process management
+- Code execution
+- Error handling
+- Automated testing
+- Software architecture
+- Git/GitHub workflow
 
 ---
 
@@ -403,23 +1010,213 @@ Screenshots of the following application areas will be added here:
 
 Potential future improvements include:
 
-- Stronger container-level sandboxing for untrusted code execution
-- More programming languages
-- Background job queues for submissions
-- Redis-based caching
-- Contest system
-- Advanced ranking algorithms
-- Code execution worker services
-- Horizontal scaling of judge workers
-- Automated deployment and monitoring
+- Stronger container-based sandboxing
+- Memory limits
+- CPU resource quotas
+- Network isolation
+- Queue-based execution workers
+- Redis-based job queues
+- Horizontal scaling
+- Real-time submission status
+- Admin problem management
+- Additional programming languages
+- Advanced leaderboard scoring
+- Contest mode
+- Plagiarism detection
+- Detailed performance analytics
+- Cloud deployment
+- CI/CD pipeline
+- Monitoring and logging infrastructure
 
 ---
 
-## 📌 Project Status
+## 📌 Current Project Status
 
-**Core development: Completed**
+| Component | Status |
+|---|---|
+| React Frontend | ✅ Complete |
+| FastAPI Backend | ✅ Complete |
+| PostgreSQL Integration | ✅ Complete |
+| Authentication | ✅ Complete |
+| Problem System | ✅ Complete |
+| C++17 Execution | ✅ Complete |
+| Python Execution | ✅ Complete |
+| Test Case Evaluation | ✅ Complete |
+| Submission History | ✅ Complete |
+| Statistics | ✅ Complete |
+| Leaderboard | ✅ Complete |
+| Password Reset | ✅ Complete |
+| Email Verification | ✅ Complete |
+| Swagger/OpenAPI | ✅ Complete |
+| Executor Test Suite | ✅ 12/12 Passed |
+| Docker Configuration | ✅ Included |
+| Documentation | ✅ Complete |
 
-CodeArena currently provides a complete full-stack coding-judge workflow with authentication, problem solving, code execution, submission tracking, and leaderboard functionality.
+---
+
+## 💼 Why CodeArena Is a Strong Software Engineering Project
+
+CodeArena combines several areas of software engineering into one application.
+
+### Full-Stack Engineering
+
+React frontend connected to a FastAPI backend and PostgreSQL database.
+
+### Backend Engineering
+
+The backend handles:
+
+- Authentication
+- Validation
+- Database operations
+- Application logic
+- Code execution
+- Error handling
+- API responses
+
+### Systems Concepts
+
+The execution engine demonstrates:
+
+- Process management
+- Compilation
+- Subprocess execution
+- Timeouts
+- Input/output handling
+- Temporary filesystem management
+
+### Database Engineering
+
+The project uses a relational database to persist users, problems, test cases, submissions, and statistics.
+
+### Testing
+
+The executor includes automated tests covering both successful execution and failure scenarios.
+
+---
+
+## 🎤 Interview-Level Project Explanation
+
+> CodeArena is a full-stack online coding judge built using React, FastAPI, PostgreSQL, SQLAlchemy, and a custom execution engine. Users can solve programming problems and submit solutions in C++17 or Python. The FastAPI backend authenticates users, stores application data and submissions in PostgreSQL, and sends submitted code to the execution engine. C++17 submissions are compiled using g++, while Python submissions are executed directly. The executor applies time and size limits, captures compilation and runtime errors, evaluates test cases, generates a verdict, and stores the submission result. I also implemented authentication, password reset, email verification, submission history, statistics, leaderboard functionality, Swagger documentation, and automated executor tests.
+
+---
+
+## 🧠 Key Engineering Concepts Demonstrated
+
+- Full-stack application architecture
+- REST API design
+- JWT authentication
+- Relational database design
+- ORM usage
+- Process execution
+- Compilation pipelines
+- Error handling
+- Timeout management
+- Input/output validation
+- Temporary filesystem management
+- Automated testing
+- Environment configuration
+- API documentation
+- Git version control
+- Docker configuration
+- Production architecture considerations
+
+---
+
+## 🏭 Production Architecture
+
+For a production-scale online judge, execution workloads could be separated from the main API servers.
+
+    Load Balancer
+         |
+         +-------------------+
+         |                   |
+         v                   v
+    API Server          API Server
+         |                   |
+         +---------+---------+
+                   |
+                   v
+               Job Queue
+                   |
+         +---------+---------+
+         |         |         |
+         v         v         v
+      Worker 1  Worker 2  Worker 3
+         |         |         |
+         v         v         v
+      Sandbox   Sandbox   Sandbox
+         |         |         |
+         +---------+---------+
+                   |
+                   v
+              PostgreSQL
+
+This architecture would allow code execution workloads to be isolated and scaled independently from the API servers.
+
+---
+
+## 📚 Learning Outcomes
+
+Building CodeArena provided practical experience with:
+
+- React application development
+- FastAPI backend development
+- PostgreSQL
+- SQLAlchemy
+- Authentication systems
+- REST APIs
+- Code execution systems
+- Process management
+- Automated testing
+- Git/GitHub
+- Application architecture
+- Security considerations
+- Deployment architecture
+
+---
+
+## ⭐ Project Highlights
+
+- Full-stack React + FastAPI application
+- PostgreSQL database
+- JWT authentication
+- C++17 + Python execution
+- Automated test-case evaluation
+- Submission history
+- Statistics dashboard
+- Global leaderboard
+- Password reset
+- Email verification
+- Swagger/OpenAPI documentation
+- Execution limits
+- Automated executor tests
+- Docker configuration
+- Production architecture considerations
+
+---
+
+## 🌐 Local URLs
+
+### Frontend
+
+    http://localhost:5173
+
+### Backend
+
+    http://127.0.0.1:8000
+
+### Swagger API Documentation
+
+    http://127.0.0.1:8000/docs
+
+---
+
+## 🔗 Repository
+
+GitHub:
+
+https://github.com/abhiram-naik/CodeArena
 
 ---
 
@@ -427,26 +1224,20 @@ CodeArena currently provides a complete full-stack coding-judge workflow with au
 
 **Abhiram Naik**
 
-GitHub:  
-https://github.com/abhiram-naik
+CodeArena was built as a full-stack software engineering project focused on backend systems, APIs, databases, authentication, code execution, testing, and application architecture.
 
 ---
 
-## ⭐ Why CodeArena?
+## 📄 License
 
-CodeArena was built as a full-stack software engineering project rather than a simple CRUD application.
+This project is available for educational and portfolio purposes.
 
-It combines:
+---
 
-- Frontend engineering
-- Backend API development
-- Authentication
-- Relational database design
-- Code execution
-- Process management
-- Error handling
-- Automated testing
-- Competitive programming workflows
-- Git/GitHub development practices
+## 🏁 Final Note
 
-The project demonstrates how multiple backend and frontend components work together to build a complete software product.
+CodeArena combines frontend development, backend engineering, databases, authentication, APIs, process execution, testing, and software architecture into one complete application.
+
+The project demonstrates how a coding platform can be designed from the user interface through the backend execution engine and database layer.
+
+**Code. Compete. Improve.**
